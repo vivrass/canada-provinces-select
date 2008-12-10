@@ -6,9 +6,11 @@ module ActionView
         priority_states    = lambda { |state| us_state_options[:priority].include?(state.last) }
         us_state_options[:show] = :full if us_state_options[:with_abbreviation]
         states_label = case us_state_options[:show]
-          when :full          then lambda { |state| ["#{state.last} - #{state.first}", state.last] }
-          when :abbreviations then lambda { |state| [state.last, state.last] }
-          else                     lambda { |state| state }
+          when :full_abb          then lambda { |state| [state.first, state.last] }
+          when :full              then lambda { |state| [state.first, state.first] }
+          when :abbreviations     then lambda { |state| [state.last, state.last] }
+          when :abb_full_abb      then lambda { |state| ["#{state.last} - #{state.first}", state.last] }
+          else                         lambda { |state| state }
         end
 
         if us_state_options[:include_blank]
