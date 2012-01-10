@@ -11,7 +11,7 @@ begin
     s.description = "US State select Rails plugin"
     s.authors = ["Rick Olson","Larry Sprock"]
     
-    s.add_runtime_dependency "rails", '>= 1'
+    s.add_runtime_dependency "rails", '>= 1.2'
     
     s.files.exclude 'init.rb'
     s.files.exclude 'us_states_select.gemspec'

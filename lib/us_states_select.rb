@@ -46,17 +46,6 @@ module ActionView
     end
 
     class InstanceTag #:nodoc:
-      # lets the us_states plugin handle Rails 1.1.2 AND trunk
-      def value_with_compat(object=nil)
-        if method(:value_without_compat).arity == 1
-          value_without_compat(object)
-        else
-          value_without_compat
-        end
-      end
-      alias_method :value_without_compat, :value
-      alias_method :value, :value_with_compat
-
       def to_us_state_select_tag(options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
