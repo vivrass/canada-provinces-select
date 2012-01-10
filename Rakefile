@@ -9,7 +9,7 @@ begin
     s.summary = %Q{US State select Rails plugin}
     s.homepage = "http://github.com/thincloud/us-state-select-plugin"
     s.description = "US State select Rails plugin"
-    s.authors = ["Larry Sprock"]
+    s.authors = ["Rick Olson","Larry Sprock"]
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
