@@ -10,6 +10,9 @@ begin
     s.homepage = "http://github.com/thincloud/us-state-select-plugin"
     s.description = "US State select Rails plugin"
     s.authors = ["Rick Olson","Larry Sprock"]
+    
+    s.files.exclude 'init.rb'
+    s.files.exclude 'us_states_select.gemspec'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
