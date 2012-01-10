@@ -1,38 +1,33 @@
 module ActionView
   module Helpers
     module FormOptionsHelper
-      def us_state_options_for_select(selected = nil, us_state_options = {})
+      def us_state_options_for_select(selected = nil, options = {})
         state_options      = ""
-        priority_states    = lambda { |state| us_state_options[:priority].include?(state.last) }
-        us_state_options[:show] = :full if us_state_options[:with_abbreviation]
-        states_label = case us_state_options[:show]
+        priority_states    = lambda { |state| options[:priority].include?(state.last) }
+        options[:show] = :full if options[:with_abbreviation]
+        states_label = case options[:show]
           when :full_abb          then lambda { |state| [state.first, state.last] }
           when :full              then lambda { |state| [state.first, state.first] }
           when :abbreviations     then lambda { |state| [state.last, state.last] }
           when :abb_full_abb      then lambda { |state| ["#{state.last} - #{state.first}", state.last] }
           else                         lambda { |state| state }
         end
+        states_label = options[:show] if options[:show].is_a?(Proc)
 
-        if us_state_options[:include_blank]
-          state_options += "<option value=\"\">--</option>\n"
-        end
-
-        if us_state_options[:priority]
+        if options[:priority]
           state_options += options_for_select(US_STATES.select(&priority_states).collect(&states_label), selected)
-          state_options += "<option value=\"\">--</option>\n"
+          state_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
+          
+          selected = nil if options[:priority].include?(selected)
         end
 
-        if us_state_options[:priority] && us_state_options[:priority].include?(selected)
-          state_options += options_for_select(US_STATES.reject(&priority_states).collect(&states_label), selected)
-        else
-          state_options += options_for_select(US_STATES.collect(&states_label), selected)
-        end
-
-        return state_options
+        state_options += options_for_select(US_STATES.collect(&states_label), selected)
+        state_options
       end
 
       def us_state_select(object, method, us_state_options = {}, options = {}, html_options = {})
-        InstanceTag.new(object, method, self, options.delete(:object)).to_us_state_select_tag(us_state_options, options, html_options)
+        options.merge!(us_state_options)
+        InstanceTag.new(object, method, self, options.delete(:object)).to_us_state_select_tag(options, html_options)
       end
 
       private
@@ -51,21 +46,10 @@ module ActionView
     end
 
     class InstanceTag #:nodoc:
-      # lets the us_states plugin handle Rails 1.1.2 AND trunk
-      def value_with_compat(object=nil)
-        if method(:value_without_compat).arity == 1
-          value_without_compat(object)
-        else
-          value_without_compat
-        end
-      end
-      alias_method :value_without_compat, :value
-      alias_method :value, :value_with_compat
-
-      def to_us_state_select_tag(us_state_options, options, html_options)
+      def to_us_state_select_tag(options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
-        content_tag("select", add_options(us_state_options_for_select(value(object), us_state_options), options, value(object)), html_options)
+        content_tag("select", add_options(us_state_options_for_select(value(object), options), options, value(object)), html_options)
       end
     end
     
