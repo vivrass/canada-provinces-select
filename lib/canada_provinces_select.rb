@@ -59,7 +59,7 @@ module ActionView
       def to_canada_province_select_tag(canada_province_options, options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
-        content_tag("select", add_options(canada_province_options_for_select(value(object), canada_province_options), options, value(object)), html_options)
+        content_tag("select", add_options(canada_province_options_for_select(value(object), canada_province_options), options, value(object)), html_options, false)
       end
     end
     
