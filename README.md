@@ -1,3 +1,6 @@
+CanadaProvinces (based on the UsStates gem)
+==============================================
+
 us-state-select-plugin
 ======================
 
